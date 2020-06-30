@@ -15,9 +15,7 @@ if (process.env.SMTP_SERVICE != null) {
     config.port = parseInt(process.env.SMTP_PORT);
     config.secure = process.env.SMTP_SECURE === "false" ? false : true;
 }
-
 const transporter = nodemailer.createTransport(config);
-
 transporter.verify(function (error, success) {
     if (error) {
         console.log('SMTP邮箱配置异常：', error);

@@ -14,8 +14,7 @@ router.get('/', function (req, res, next) {
         q.find().then(function (results) {
             if (results.length > 0) {
                 res.redirect('/');
-            }
-            else {
+            } else {
                 res.render('sign-up', {
                     email: adminMail
                 });
@@ -31,15 +30,12 @@ router.post('/', function (req, res, next) {
     q.find().then(function (results) {
         if (results.length > 0) {
             res.redirect('/');
-        }
-        else {
+        } else {
             let user = new AV.User();
             user.setUsername(req.body.username);
             user.setPassword(req.body.password);
             user.setEmail(req.body.email);
-            user.signUp().then(function (loginedUser) {
-            }, (function (error) {
-            }));
+            user.signUp().then(function (loginedUser) {}, (function (error) {}));
             res.redirect('/');
         }
     });

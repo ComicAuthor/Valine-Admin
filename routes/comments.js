@@ -122,6 +122,7 @@ router.get('/not-spam', function (req, res, next) {
         res.redirect('/');
     }
 });
+
 router.get('/mark-spam', function (req, res, next) {
     if (req.currentUser) {
         let query = new AV.Query(Comment);

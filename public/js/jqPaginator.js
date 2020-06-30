@@ -2,7 +2,7 @@
     'use strict';
 
     $.jqPaginator = function (el, options) {
-        if(!(this instanceof $.jqPaginator)){
+        if (!(this instanceof $.jqPaginator)) {
             return new $.jqPaginator(el, options);
         }
 
@@ -205,7 +205,7 @@
                     self.$container.empty();
                     self.$container.removeData('jqPaginator');
                     break;
-                default :
+                default:
                     throw new Error('[jqPaginator] method "' + method + '" does not exist');
             }
 

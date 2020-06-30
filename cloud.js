@@ -40,7 +40,7 @@ function sendNotification(currentComment, defaultIp) {
 
 AV.Cloud.afterSave('Comment', function (req) {
     let currentComment = req.object;
-    // 检查垃圾评论
+    // 检查垃圾评论操作
     return sendNotification(currentComment, req.meta.remoteAddress);
 });
 

@@ -33,6 +33,7 @@ app.use(bodyParser.urlencoded({
     extended: false
 }));
 app.use(cookieParser());
+// 初始cookie
 app.use(AV.Cloud.CookieSession({
     secret: 'my secret',
     maxAge: 3600000,

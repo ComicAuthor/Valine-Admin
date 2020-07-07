@@ -13,8 +13,7 @@
         <div class="header">
             <div class="title"><span><%= title %></span>
                 <span><a class="lookOther" href="/comments/onlyBlogger?page=1">只看博主</a></span>
-                <!-- <span><a href="/comments?page=1">查看全部</a></span> -->
-
+                <span class="base noNeedPagination">无需分页</span>
             </div>
             <div class="logout-wrapper"><a href="/logout">退出登录</a></div>
         </div>
@@ -108,7 +107,7 @@
 
 
         <div class="tools"> <span id="total"></span>
-            <ul class="pagination" id="pagination1">
+            <ul class="pagination" id="pagination">
 
             </ul> <span id="text"></span>
         </div>
@@ -117,7 +116,7 @@
              * @Author: Caleb 
              * @Date: 2020-06-30 17:51:38 
              * @Last Modified by: Caleb
-             * @Last Modified time: 2020-06-30 18:28:02
+             * @Last Modified time: 2020-07-07 11:51:49
              * @desc: 此模块是分页插件模块
              */
             function getQueryObject(url) {
@@ -134,32 +133,48 @@
                 })
                 return obj
             }
-            console.log(window.location);
 
             var obj = getQueryObject(window.location.href)
-            var list = '<%= dataCount %>';
-            var max = Math.ceil(parseInt(list) / 10);
-            var visiblePages = 10
-            $('#pagination1').jqPaginator({
-                pageSize: 10,
-                totalCounts: parseInt(list),
-                visiblePages: visiblePages,
-                currentPage: parseInt(obj.page),
-                first: `<li class="first"><a href="${window.location.pathname}?page=1">首页</a></li>`,
-                prev: `<li class="prev"><a href="${window.location.pathname}?page={{page}}">上一页</a></li>`,
-                next: `<li class="prev"><a href="${window.location.pathname}?page={{page}}">下一页</a></li>`,
-                last: `<li class="first"><a href="${window.location.pathname}?page=${max}">尾页</a></li>`,
-                page: `<li class="page"><a href="${window.location.pathname}?page={{page}}">{{page}}</a></li>`,
-                onPageChange: function (num) {
-                    if (num == max || num == 1) {
-                        $('.prev').on('click', function (e) {
-                            return false;
-                        })
+
+            if (obj.page) {
+                $('.noNeedPagination').html('无需分页')
+                $('.noNeedPagination').css('color', "red")
+                var list = '<%= dataCount %>';
+                var max = Math.ceil(parseInt(list) / 10);
+                var visiblePages = 10
+                $('#pagination').jqPaginator({
+                    pageSize: 10,
+                    totalCounts: parseInt(list),
+                    visiblePages: visiblePages,
+                    currentPage: parseInt(obj.page),
+                    first: `<li class="first"><a href="${window.location.pathname}?page=1">首页</a></li>`,
+                    prev: `<li class="prev"><a href="${window.location.pathname}?page={{page}}">上一页</a></li>`,
+                    next: `<li class="prev"><a href="${window.location.pathname}?page={{page}}">下一页</a></li>`,
+                    last: `<li class="first"><a href="${window.location.pathname}?page=${max}">尾页</a></li>`,
+                    page: `<li class="page"><a href="${window.location.pathname}?page={{page}}">{{page}}</a></li>`,
+                    onPageChange: function (num) {
+                        if (num == max || num == 1) {
+                            $('.prev').on('click', function (e) {
+                                return false;
+                            })
+                        }
+                        $('#text').html(`页数：${num} / ${visiblePages}`);
+                        $('#total').html(`总条数：${parseInt(list)} 条`)
                     }
-                    $('#text').html(`页数：${num} / ${visiblePages}`);
-                    $('#total').html(`总条数：${parseInt(list)} 条`)
+                });
+            } else {
+                $('.noNeedPagination').html('需要分页')
+            }
+
+
+            $('.noNeedPagination').on('click', () => {
+                var path = window.location.pathname;
+                if (obj.page) {
+                    window.location.href = path;
+                } else {
+                    window.location.href = path + "?page=1";
                 }
-            });
+            })
 
 
             /*

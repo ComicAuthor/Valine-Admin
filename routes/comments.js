@@ -9,12 +9,15 @@ const Comment = AV.Object.extend('Comment');
 // Comment 列表
 router.get('/', async function (req, res, next) {
     var page = parseInt(req.query.page);
+
     if (req.currentUser) {
         let query = new AV.Query(Comment);
         let count = await query.count()
         query.descending('createdAt');
-        query.limit(10);
-        query.skip(page * 10 - 10);
+        if (page) {
+            query.limit(10);
+            query.skip(page * 10 - 10);
+        }
         query.find().then(function (results) {
             res.render('comments', {
                 dataCount: count,
@@ -50,8 +53,10 @@ router.get('/onlyBlogger', async function (req, res, next) {
         query.descending('createdAt');
         query.equalTo('mail', adminMail);
         let count = await query.count()
-        query.limit(10);
-        query.skip(page * 10 - 10);
+        if (page) {
+            query.limit(10);
+            query.skip(page * 10 - 10);
+        }
         query.find().then(function (results) {
             res.render('comments', {
                 dataCount: count,

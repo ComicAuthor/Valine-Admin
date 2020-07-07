@@ -42,7 +42,7 @@ app.use(AV.Cloud.CookieSession({
 
 app.get('/', function (req, res) {
     if (req.currentUser) {
-        res.redirect('/comments');
+        res.redirect('/comments?page=1');
     } else {
         res.render('index');
     }

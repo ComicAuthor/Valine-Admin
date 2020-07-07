@@ -13,6 +13,14 @@ a {
 	color: #3eb0ef;
 }
 
+.base {
+	text-decoration: none;
+	color: #3eb0ef;
+	font-size: 1rem;
+	margin-left: 20px;
+	cursor: pointer;
+}
+
 .lookOther {
 	font-size: 1rem;
 	margin-left: 20px;
@@ -204,7 +212,7 @@ li {
 	vertical-align: middle;
 }
 
-#pagination1 {
+#pagination {
 	vertical-align: middle;
 }
 

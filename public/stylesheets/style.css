@@ -4,6 +4,10 @@ body {
 	font-size: 1rem;
 }
 
+footer {
+	margin-top: 15px;
+}
+
 a {
 	text-decoration: none;
 	color: #3eb0ef;

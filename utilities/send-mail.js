@@ -1,5 +1,7 @@
 'use strict';
 const nodemailer = require('nodemailer');
+const request = require('request')
+const $ = require('cheerio')
 
 let config = {
     auth: {
@@ -45,13 +47,66 @@ exports.notice = (comment) => {
     };
 
     transporter.sendMail(mailOptions, (error, info) => {
-        if (error) {
-            return console.log(error);
-        }
+        if (error) return console.log(error);
         console.log('博主通知邮件成功发送: %s', info.response);
         comment.set('isNotified', true);
         comment.save();
     });
+
+
+    if (process.env.SC_KEY != null) {
+        const ScDespTemplate = `
+#### ${NICK} 给您的回复如下：
+        
+> ${COMMENT}
+        
+#### 您可以点击[查看回复的完整內容](${POST_URL})`;
+        const ScTextTemplate = `您在 ${SITE_NAME} 上有新评论啦！`;
+
+        const _DespTemplate = process.env.SC_DESP_TEMPLATE || ScDespTemplate
+        const _TextTemplate = process.env.SC_TEXT_TEMPLATE || ScTextTemplate
+        request({
+            url: `https://sc.ftqq.com/${process.env.SC_KEY}.send`,
+            method: "POST",
+            body: `text=${_TextTemplate}&desp=${_DespTemplate}`,
+            headers: {
+                'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'
+            }
+        }, function (error, response, body) {
+            if (error) return console.log('发送微信提醒异常：', error);
+            if (body) body = JSON.parse(body);
+            if (response.statusCode === 200 && body.errmsg === 'success') console.log('已发送微信提醒')
+            else console.warn('微信提醒失败:', body)
+        })
+    }
+
+    if (process.env.QMSG_KEY != null) {
+        if (process.env.QQ_SHAKE != null) {
+            var shakeTemplate = process.env.SHAKE_TEMPLATE || '[CQ:shake,id=5]';
+            request(`https://qmsg.zendee.cn:443/send/${process.env.QMSG_KEY}.html?msg=${encodeURIComponent(shakeTemplate)}`, function (error, response, body) {
+                if (error) return console.log('调起QQ戳一戳功能异常：', error);
+                if (body) body = JSON.parse(body);
+                if (response.statusCode === 200 && body.success === true) console.log('已成功戳一戳！')
+                else console.warn('QQ戳一戳失败:', body)
+            })
+        }
+        var comment = $(COMMENT.replace(/<img.*?src="(.*?)".*?>/g, "\n[图片]$1\n").replace(/<br>/g, "\n")).text().replace(/\n+/g, "\n").replace(/\n+$/g, "")
+        const QmsgTemplate = `您在 ${SITE_NAME} 上有新评论啦！
+${NICK} 给您的回复如下：[CQ:emoji,id=11015]
+           
+    [CQ:face,id=12] ${comment}
+        
+您可以点击 ${POST_URL} 前去查看！`
+
+        // 自定义模板以及默认模板
+        let _template = process.env.QMSG_TEMPLATE || QmsgTemplate
+        request(`https://qmsg.zendee.cn:443/send/${process.env.QMSG_KEY}.html?msg=${encodeURIComponent(_template)}`, function (error, response, body) {
+            if (error) return console.log('发送QQ提醒异常：', error);
+            if (body) body = JSON.parse(body);
+            if (response.statusCode === 200 && body.success === true) console.log('已发送QQ提醒')
+            else console.warn('QQ提醒失败:', body)
+        })
+    }
 }
 
 exports.send = (currentComment, parentComment) => {

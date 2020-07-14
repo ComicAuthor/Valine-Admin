@@ -2,7 +2,7 @@
   "name": "valine_admin",
   "version": "1.0.2",
   "private": true,
-  "description": "A sample Node.js app using Express",
+  "description": "A Node.js app using Express for valine admin",
   "main": "server.js",
   "scripts": {
     "start": "node server.js",

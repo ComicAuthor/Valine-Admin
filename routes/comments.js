@@ -89,7 +89,7 @@ router.get('/resend-email', function (req, res, next) {
         query.get(req.query.id).then(function (object) {
             query.get(object.get('rid')).then(function (parent) {
                 mail.send(object, parent);
-                res.redirect('/comments')
+                res.redirect('/comments?page=1')
             }, function (err) {}).catch(next);
         }, function (err) {}).catch(next);
     } else {
@@ -102,7 +102,7 @@ router.get('/delete', function (req, res, next) {
         let query = new AV.Query(Comment);
         query.get(req.query.id).then(function (object) {
             object.destroy();
-            res.redirect('/comments')
+            res.redirect('/comments?page=1')
         }, function (err) {}).catch(next);
     } else {
         res.redirect('/');
@@ -121,7 +121,7 @@ router.get('/not-spam', function (req, res, next) {
             });
             object.save();
             spam.submitHam(object);
-            res.redirect('/comments')
+            res.redirect('/comments?page=1')
         }, function (err) {}).catch(next);
     } else {
         res.redirect('/');

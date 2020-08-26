@@ -3,11 +3,12 @@
 
 <head>
     <title>LeanCloud评论管理</title>
-    <link rel="stylesheet" href="/stylesheets/style.css">
+    <link rel="stylesheet" href="/stylesheets/layui.css" media="all">
+    <link rel="stylesheet" href="/stylesheets/style.css" media="all">
 </head>
 
 <body>
-    <div class="sign-in-wrap">
+    <div class="sign-in-wrap layui-anim" data-anim="layui-anim-upbit">
         <p class="title">LeanCloud评论管理</p>
         <form method="post" action="/login" class="gh-signin">
             <input tabindex="1" name="username" placeholder="管理员邮箱" autofocus="" type="text" class="gh-input">
@@ -15,10 +16,12 @@
             <input tabindex="3" type="submit" class="login-button" value="登录">
         </form>
         <footer>
-            <span> Design by <a href="https://deserts.io/" target="_blank" rel="noopener noreferrer">@Deserts</a> |
+            <span> Design by <a href="https://deserts.io/" class="show" target="_blank"
+                    rel="noopener noreferrer">@Deserts</a> |
                 Modify by </span><a class="show" href="https://reinness.com" target="_blank">@Caleb</a>
         </footer>
     </div>
+    <script src="/js/layui.js" charset="utf-8"></script>
 </body>
 
 </html>

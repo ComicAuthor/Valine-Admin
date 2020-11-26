@@ -1,6 +1,7 @@
 'use strict';
 
 var AV = require('leanengine');
+const consola = require('consola')
 
 AV.init({
   appId: process.env.LEANCLOUD_APP_ID,
@@ -18,7 +19,10 @@ var app = require('./app');
 var PORT = parseInt(process.env.LEANCLOUD_APP_PORT || process.env.PORT || 3000);
 
 app.listen(PORT, function (err) {
-  console.log('Node app is running on port:', PORT);
+  consola.ready({
+    message: `Node app is running on port: http://localhost:${PORT}`,
+    badge: true
+  })
 
   // 注册全局未捕获异常处理器
   process.on('uncaughtException', function (err) {

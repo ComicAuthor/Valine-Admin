@@ -92,9 +92,9 @@ exports.notice = (comment) => {
         }
         var comment = $(COMMENT.replace(/<img.*?src="(.*?)".*?>/g, "\n[图片]$1\n").replace(/<br>/g, "\n")).text().replace(/\n+/g, "\n").replace(/\n+$/g, "")
         const QmsgTemplate = `您在 ${SITE_NAME} 上有新评论啦！
-${NICK} 给您的回复如下：[CQ:emoji,id=11015]
+${NICK} 给您的回复如下：
            
-    [CQ:face,id=12] ${comment}
+    ${comment}
         
 您可以点击 ${POST_URL} 前去查看！`
 
